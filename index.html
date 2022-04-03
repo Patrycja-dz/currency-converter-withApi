@@ -20,8 +20,18 @@
                     <span>Kwota w zł</span>
                     <input placeholder="Wpisz kwotę w zł" class="form__field js-amount" type="number" step="0.01">
             </p>
+            <p>
+                <label for="">
+                    <span>Waluta</span>
+                    <select class="form__options js-currency">
+                        <option></option>
+                    </select>
+            </p>
+            <p class="form__result js-result"></p>
+            <button class="form__button">Przelicz</button>
         </form>
     </div>
+    <script src="app.js" defer></script>
 </body>
 
 </html>
