@@ -1,25 +1,59 @@
-const amount = document.getElementById("js-number");
-const select = document.getElementById("js-select");
-const convert = document.querySelector(".js-button");
-const result = document.querySelector(".js-text");
-let amountToConvert = 0;
+{
+    const select = document.getElementById("js-select");
+    async function getCurrencyList() {
+        try {
+            let response = await fetch(`http://api.nbp.pl/api/exchangerates/tables/c/?format=json`);
+            let json = await response.json();
+            const data = json[0].rates;
+            const renderedRates = data.filter((rate) => {
+                return rate.code === "EUR" || rate.code === "USD" || rate.code === "CHF";
+            });
 
-const api = "http://api.nbp.pl/api/exchangerates/tables/c/";
+            const renderOptions = () => {
+                for (element of renderedRates) {
+                    console.log(element)
+                    select.innerHTML += `<option value = "${element.code}">${element.code}</option>`
+                }
 
-const conectApi = async (url) => {
-    const data = await fetch(url);
-    const json = await data.json();
-    const tables = json[0].rates;
-    // console.log(tables) array of currencies 
-    const renderedRates = tables.filter((currency) => {
-        return currency.code === "EUR" || currency.code === "USD" || currency.code === "CHF"
+            }
+            renderOptions()
 
-    })
-    // console.log(renderedRates) // array
-    for (const element of renderedRates) {
-        // console.log(element) // 3 objects - eur, usd, chf
-        select.innerHTML  += `<option value = "${element.bid}">${element.code}</option>`
+            const calculateResult = (amount, currency) => {
+                switch (currency) {
+                    case "USD":
+                        return amount / element.bid;
+                    case "EUR":
+                        return amount / element.bid;
+                    case "CHF":
+                        return amount / element.bid;
+                    default:
+                        console.log("something went wrong")
+                }
+
+            }
+            const updateResultText = (amount, result, currency) => {
+                const resultElement = document.querySelector(".js-result");
+                resultElement.innerHTML = `${amount.toFixed(2)} PLN = <strong>${result.toFixed(2)} ${currency}</strong>`
+            }
+            const onFormSubmit = (event) => {
+                event.preventDefault();
+                const amountElement = document.getElementById("js-number");
+                const amount = +amountElement.value;
+                const currency = select.value;
+                const result = calculateResult(amount, currency);
+                updateResultText(amount, result, currency)
+
+            }
+            const init = () => {
+                const formElement = document.querySelector(".js-form");
+                formElement.addEventListener("submit", onFormSubmit)
+            }
+            init()
+
+        } catch (err) {
+            console.log(err)
+        }
     }
+    getCurrencyList()
 
 }
-conectApi(api)

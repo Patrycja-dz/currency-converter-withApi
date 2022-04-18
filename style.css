@@ -72,6 +72,10 @@ html {
     font-weight: 300;
 
 }
+.converter__number{
+width: 15rem;
+line-height: 1.4;
+}
 
 .converter__button {
     padding: 1rem 5rem;
@@ -82,12 +86,9 @@ html {
     font-weight: 500;
     margin-left: 1rem;
 }
-.converter__amount{
+.converter__result{
     text-align: center;
     padding: 1rem;
     font-size: 1.4rem;
 
-}
-.converter__amount span{
-    margin-left: 2.5rem;
 }
