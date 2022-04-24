@@ -5,6 +5,14 @@
     const calculatorBtn = qs(".js-button");
 
     const init = () => {
+        setTimeout(() => {
+            const loader = qs(".loader");
+            const container = qs(".container");
+            loader.style.opacity = 0;
+            loader.style.display = 'none';
+            container.style.display = "block";
+            setTimeout(() => (container.style.opacity = 1), 50)
+        }, 3000)
         const form = qs(".js-form");
         form.addEventListener("submit", function (event) {
             event.preventDefault();
@@ -34,12 +42,19 @@
                     const calculateResult = () => {
                         const amount = +amountElement.value;
                         const result = amount / options.value;
-                        const resultElement = qs(".js-result");
-                        resultElement.textContent = `${amount.toFixed(2)} to ${result.toFixed(2)} PLN `
-                        console.log(resultElement.textContent = `${amount.toFixed(2)} to ${result.toFixed(2)} PLN `)
+
+                        const showResult = () => {
+                            const resultElement = qs(".js-result");
+                            resultElement.value = "";
+                            resultElement.textContent = `${amount.toFixed(2)} to ${result.toFixed(2)} PLN `;
+                            console.log(resultElement.textContent = `${amount.toFixed(2)} to ${result.toFixed(2)} PLN `)
+                            
+                        }
+                        showResult()
 
                     }
                     calculateResult()
+
 
                 });
 

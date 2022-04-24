@@ -27,6 +27,9 @@ html {
     border: 2px solid var(--primary-borders--color);
     font-family: var(--primary-f-family);
     padding: 2rem;
+    opacity: 0;
+    display: none;
+    transition: opacity 2s ease-in;
 }
 
 .converter__header {
@@ -96,11 +99,48 @@ html {
 
 }
 
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30rem;
+}
+
+.loader>span {
+    display: inline-block;
+    background-color: var(--button-color);
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    margin: 0 0.8rem;
+    transform: translate3d(0);
+    animation: bounce 0.8s infinite alternate;
+}
+
+.loader>span:nth-child(2) {
+    background-color: var(--underline-color);
+    animation-delay: 0.4s;
+}
+
+.loader>span:nth-child(3) {
+    background-color: var(--heading-color);
+    animation-delay: 0.6;
+}
+
+@keyframes bounce {
+    to {
+        width: 1.8rem;
+        height: 1.8rem;
+        transform: translate3d(0, 2.5rem, 0)
+    }
+}
+
 @media screen and (max-width: 375px) {
-    .converter__input{
-      
+    .converter__input {
+
         margin-top: 2rem;
     }
+
     .converter__button {
         width: 100%;
         margin: 2rem 3rem 1rem 3rem;
