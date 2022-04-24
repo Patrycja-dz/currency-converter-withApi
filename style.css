@@ -22,7 +22,7 @@ html {
 
 .container {
     width: 80%;
-    margin:10%;
+    margin: 10%;
     max-width: 100%;
     border: 2px solid var(--primary-borders--color);
     font-family: var(--primary-f-family);
@@ -34,7 +34,7 @@ html {
     justify-content: space-around;
     align-items: center;
     padding-bottom: 4.5rem;
-    
+
 }
 
 .converter__logo {
@@ -43,7 +43,7 @@ html {
     height: 10rem;
     background-size: cover;
     background-repeat: no-repeat;
-   
+
 }
 
 .converter__heading {
@@ -53,7 +53,8 @@ html {
 
 .converter__inputs {
     display: flex;
-    /* width: 90%; */
+    flex-wrap: wrap;
+    width: 90%;
     margin: auto;
     justify-content: space-around;
     border-bottom: 3px solid var(--underline-color);
@@ -72,9 +73,10 @@ html {
     font-weight: 300;
 
 }
-.converter__number{
-width: 15rem;
-line-height: 1.4;
+
+.converter__number {
+    width: 15rem;
+    line-height: 1.4;
 }
 
 .converter__button {
@@ -86,9 +88,21 @@ line-height: 1.4;
     font-weight: 500;
     margin-left: 1rem;
 }
-.converter__result{
+
+.converter__result {
     text-align: center;
     padding: 1rem;
     font-size: 1.4rem;
 
+}
+
+@media screen and (max-width: 375px) {
+    .converter__input{
+      
+        margin-top: 2rem;
+    }
+    .converter__button {
+        width: 100%;
+        margin: 2rem 3rem 1rem 3rem;
+    }
 }
