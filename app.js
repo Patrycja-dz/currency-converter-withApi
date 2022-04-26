@@ -6,7 +6,7 @@
     let currentCurrency;
 
     function getCurrencyList() {
-        const url = "https://api.nbp.pl/api/exchangerates/tables/c/?format=json";
+        const url = "https://api.nbp.pl/api/exchangerates/tables/a/?format=json";
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
@@ -15,10 +15,10 @@
                 // console.log(currencyElements[1])
                 const renderOptions = (currencyElements) => {
                     currencyElements.forEach(element => {
-                        element.bid && element.code;
+                        element.mid && element.code;
                         const select = qs(".js-currencies");
                         const createOptions = create("option");
-                        createOptions.value = element.bid;
+                        createOptions.value = element.mid;
                         createOptions.textContent = element.code;
                         select.appendChild(createOptions);
                         currentCurrency = currencyElements[0].bid;
