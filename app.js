@@ -1,79 +1,77 @@
 {
-    document.addEventListener("DOMContentLoaded", (event) => {
-        const create = (tagName) => document.createElement(tagName);
-        console.log("Loaeded");
-        const select = document.getElementById("js-select");
-        async function getCurrencyList() {
-            try {
+    const qs = (selector) => document.querySelector(selector);
+    const create = (tag) => document.createElement(tag);
+    const form = qs(".js-form");
+    const btn = qs(".js-button")
+    let currentCurrency;
 
-                let response = await fetch(`http://api.nbp.pl/api/exchangerates/tables/c/?format=json`);
-                let json = await response.json();
-                const data = json[0].rates;
-                const renderedRates = data.filter((rate) => {
-                    return rate.code === "EUR" || rate.code === "USD" || rate.code === "CHF";
-                });
-    
-                // const renderOptions = () => {
-                //     for (element of renderedRates) {
-                //         console.log(element)
-                //         select.innerHTML += `<option value = "${element.bid}">${element.code}</option>`
-                //     }
-    
-                // }
-                // renderOptions()
-                const renderOptions =() =>{
-                    renderedRates.forEach(({code,bid})=>{
-                        select.innerHTML += `<option value = "${bid}">${code}</option>`
+    function getCurrencyList() {
+        fetch("http://api.nbp.pl/api/exchangerates/tables/c/?format=json")
+            .then((response) => response.json())
+            .then((data) => {
+                let currency = data[0].rates;
+                let currencyElements = currency.filter((rate) => rate.code === "USD" || rate.code === "EUR" || rate.code === "CHF")
+                // console.log(currencyElements[1])
+                const renderOptions = (currencyElements) => {
+                    currencyElements.forEach(element => {
+                        element.bid && element.code;
+                        const select = qs(".js-currencies");
+                        const createOptions = create("option");
+                        createOptions.value = element.bid;
+                        createOptions.textContent = element.code;
+                        select.appendChild(createOptions);
+                        currentCurrency = currencyElements[0].bid;
+                        select.addEventListener("change", () => {
+                            currentCurrency = `${select.value}`;
+                            console.log(currentCurrency) // value of option
+                        });
+
+
                     })
-                }
-                renderOptions()
-
-                // const calculateResult = (amount, currency) => {
-                //     switch (currency) {
-                //         case "4.2185":
-                //             return amount / element.bid;
-                //         case "4.5864":
-                //             return amount / element.bid;
-                //         case "4.4409":
-                //             return amount / element.bid;
-                //         default:
-                //             console.log("something went wrong")
-                //     }
-
-                // }
-                const updateResultText = (amount, result, currency) => {
-                    const resultElement = document.querySelector(".js-result");
-                    resultElement.innerHTML = `${amount.toFixed(2)} PLN = <strong>${result.toFixed(2)} ${currency}</strong>`
-                }
-                const onFormSubmit = (event) => {
-                    event.preventDefault();
-                    const amountElement = document.getElementById("js-number");
-                    const amount = +amountElement.value;
-                    const currency = select.value;
-                    // const result = calculateResult(amount, currency);
-                    updateResultText(amount, result, currency)
 
                 }
-                const init = () => {
-                    const formElement = document.querySelector(".js-form");
-                    formElement.addEventListener("submit", onFormSubmit)
-                }
-                init()
+                renderOptions(currencyElements);
 
-            } catch (err) {
-                console.log(err)
-            }
+
+            });
+
+    }
+    getCurrencyList();
+    setTimeout(() => {
+        const loader = qs(".loader");
+        const container = qs(".container");
+        loader.style.opacity = 0;
+        loader.style.display = 'none';
+        container.style.display = "block";
+        setTimeout(() => (container.style.opacity = 1), 50)
+    }, 3000);
+
+    function reset() {
+        const resetBtn = qs(".js-reset");
+        resetBtn.addEventListener("click", () => {
+            form.reset()
+            const textEl = qs(".js-result");
+            textEl.innerHTML = ``;
+        })
+    }
+    reset();
+
+    const init = () => {
+        const result = (currentCurrency) => {
+            const amountEl = qs(".js-input");
+            const amount = +amountEl.value;
+            let res = amount / currentCurrency;
+            const textEl = qs(".js-result");
+            textEl.innerHTML = `${amount.toFixed(2)} to ${res.toFixed(2)} PLN `;
         }
-        getCurrencyList()
 
+        btn.addEventListener("click", () => {
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                result(currentCurrency);
+            })
+        })
+    };
 
-    })
+    init();
 }
-
-// {
-//     const init = () => {
-//         const formElement = document.querySelector(".js-form");
-//         formElement.addEventListener("submit", onFormSubmit)
-//     }
-//     init()
-// }
