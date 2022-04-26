@@ -6,7 +6,8 @@
     let currentCurrency;
 
     function getCurrencyList() {
-        fetch("http://api.nbp.pl/api/exchangerates/tables/c/?format=json")
+        const url = "http://api.nbp.pl/api/exchangerates/tables/c/?format=json";
+        fetch(url)
             .then((response) => response.json())
             .then((data) => {
                 let currency = data[0].rates;
